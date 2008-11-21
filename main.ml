@@ -1,8 +1,7 @@
 open Str
 open String
 open Color
-
-type depth_vertex = Depth_vertex of (float * float * float * float);;
+open Pix_type
 
 let data =
 	object (self)
@@ -21,14 +20,12 @@ let data =
 				try 
 					while true do
 						let line = input_line channel in
-						let sp = Array.of_list (split (regexp ",") (sub line 0 ((length line) -1))) in
-						ans := (Depth_vertex ((float_of_string sp.(0)), 
-																						(float_of_string sp.(1)), 
-																						(float_of_string sp.(2)), 
-																						(float_of_string sp.(3)))) :: !ans;
+						let sp = split (regexp ",") (sub line 0 (pred (length line))) in
+						let [ x; y; z; d ] = List.map float_of_string sp in
+						ans := Depth_vertex (x, y, z, d) :: !ans;
 					done;
 					!ans
-				with End_of_file -> !ans
+				with End_of_file -> close_in_noerr channel; !ans
 		
 		method save_image =
 				let img_rgb = new OImages.rgb24 600 400 in
@@ -59,7 +56,7 @@ let data =
 		end;; 
 
 let init_gl width height =
-		GlDraw.point_size 1.0;
+		GlDraw.point_size 0.5;
     GlDraw.shade_model `smooth;
     GlClear.color (0.0, 0.0, 0.0);
     GlClear.depth 1.0;
@@ -71,16 +68,23 @@ let init_gl width height =
 let draw_gl_scene () =
   GlClear.clear [`color; `depth];
   GlMat.load_identity ();
-	(* Draw the triangle *)
-  GlMat.translate3 (-150.0, -150.0, -400.0);
+	GlMat.translate3 (-150.0, -150.0, -400.0);
 	GlDraw.begins `points;
-	List.iter (fun (Depth_vertex (x, y, z, d)) -> 
-		let color = d /. 250.0 in
-			GlDraw.color (color, color, color);
+	List.iter (fun (Depth_vertex (x, y, z, d)) ->
+		let color = d /. 255.0 in
+			GlDraw.color (color /. 1.1, color /. 1.5, color);
 			GlDraw.vertex ~x:x ~y:y ~z:z ()) (data#next_frame);
 	GlDraw.ends ();
+(*	List.iter (fun x ->                        *)
+(*		match x with                             *)
+(*			| Depth_vertex (_, _, _, d) ->         *)
+(*				let color = d /. 255.0 in            *)
+(*					GlDraw.color (color, color, color);*)
+(*					Render.cube x) data#next_frame;    *)
+
   Glut.swapBuffers ();
 	data#save_image;;
+
 (* Handle window reshape events *)
 let reshape_cb ~w ~h =
   let 
@@ -109,6 +113,14 @@ let visibility (state:Glut.visibility_state_t) =
 		| Glut.VISIBLE -> timer 1
 		| _ -> timer 0;;
 
+let enable () =
+	Gl.enable `lighting;
+	Gl.enable `depth_test;
+	Gl.enable `light0;
+	Gl.enable `polygon_smooth;
+	Gl.enable `color_material
+
+
 let main () =
   let 
     width = 640 and
@@ -121,8 +133,11 @@ let main () =
     Glut.displayFunc draw_gl_scene;
     Glut.keyboardFunc keyboard_cb;
     Glut.reshapeFunc reshape_cb;
-		Glut.timerFunc ~ms:data#get_time_interval ~cb:(fun ~value:x -> (timer x)) ~value:1;
+		Glut.timerFunc ~ms:data#get_time_interval 
+												 ~cb:(fun ~value:x -> (timer x)) 
+												 ~value:1;
 		Glut.visibilityFunc ~cb:(fun ~state -> (visibility state));
+		enable ();
     init_gl width height;
 		Glut.mainLoop ()
 

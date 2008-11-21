@@ -1,0 +1,1 @@
+type depth_vertex = Depth_vertex of (float * float * float * float);;
