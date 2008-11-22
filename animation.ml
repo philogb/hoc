@@ -96,15 +96,10 @@ let keyboard_cb ~key ~x ~y =
     | 27 (* ESC *) -> exit 0
     | _ -> ()
 
-let rec timer value =
+let rec update value =
 	if value = 1 then
 		Glut.postRedisplay ();
-	Glut.timerFunc ~ms:data#get_time_interval ~cb:(fun ~value:x -> (timer x)) ~value:value;;
-
-let visibility (state:Glut.visibility_state_t) =
-	match state with
-		| Glut.VISIBLE -> timer 1
-		| _ -> timer 0;;
+	Glut.timerFunc ~ms:data#get_time_interval ~cb:(fun ~value:x -> (update x)) ~value:value;;
 
 let enable () =
 	Gl.enable `lighting;
@@ -127,9 +122,8 @@ let main () =
     Glut.keyboardFunc keyboard_cb;
     Glut.reshapeFunc reshape_cb;
 		Glut.timerFunc ~ms:data#get_time_interval 
-												 ~cb:(fun ~value:x -> (timer x)) 
+												 ~cb:(fun ~value:x -> (update x)) 
 												 ~value:1;
-		Glut.visibilityFunc ~cb:(fun ~state -> (visibility state));
 		enable ();
     init_gl width height;
 		Glut.mainLoop ()
