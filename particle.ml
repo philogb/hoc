@@ -1,18 +1,19 @@
 open Pix_type
 open Str
 open String
-open Color
 
 type animation = Idle | Project;;
 type animation_function = animation * (depth_vertex list -> depth_vertex list);;
 
-class model =
+class particle_model =
 object (self)
 	val mutable animation_types = ref ([] : animation_function list)
 	val mutable loaded_frame = ref ([] : depth_vertex list)
 	val mutable start_frame = ref ([] : depth_vertex list)
 	val mutable last_frame = ref ([] : depth_vertex list)
 	val mutable time = ref 0.
+	
+	method get_time = !time
 	
 	method set_animation ?(inv = false) (t: animation) =
 		let rec search_animation = function
@@ -45,9 +46,9 @@ object (self)
 	method draw =
 		GlDraw.begins `points;
 		List.iter2 (fun x y ->
-						let Depth_vertex(x, y, z, d) = Interpolate.linear x y !time in
+						let Depth_vertex(x, y, z, d) = Interpolate.cartesian x y !time in
 						let color = d /. 255.0 in
-						GlDraw.color (color /. 1.1, color /. 1.5, color);
+						GlDraw.color (color, color, color);
 						GlDraw.vertex ~x: x ~y: y ~z: z ()
 			) !start_frame !last_frame;
 		GlDraw.ends ()
