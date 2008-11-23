@@ -9,6 +9,30 @@ open Transition
 let part = new particle_model;;
 let cam = new camera_model;;
 
+let timeline = 
+	object (self)
+		val mutable frame = 0.
+		val camera_timeline = [
+			(1., ([ Translate((-100., -150., 0.), (0., -150., -350.)); Rotate(0., 40., (0., 1., 0.)) ], 300., (Quart, EaseInOut)));
+			(350., ([ Translate((0., -150., -350.), (-100., -150., -300.)); Rotate(0., -40., (0., 1., 0.)) ], 300., (Quart, EaseInOut)));
+			(701., ([ Translate((0., -150., -350.), (-100., -150., -50.)) ], 600., (Quart, EaseOut))) ]
+		
+		val particle_timeline = [
+			(1., (true, (Random, 250., (Quart, EaseOut))));
+			(701., (false, (Random, 50., (Quart, EaseOut))));
+			(752., (false, (Random, 300., (Quart, EaseOut)))) ]
+			
+		method tick =
+			frame <- frame +. 1.;
+			try
+				let camera_anim = List.assoc frame camera_timeline in
+					cam#set_animations camera_anim;
+				let (inv, part_anim) = List.assoc frame particle_timeline in
+					part#set_animation ~invert:inv part_anim;
+			with
+				| Not_found -> ()
+end
+
 let init width height =
 		GlDraw.point_size 0.5;
     GlDraw.shade_model `smooth;
@@ -23,7 +47,6 @@ let draw () =
   GlClear.clear [`color; `depth];
 	GlMat.mode `modelview;
   GlMat.load_identity ();
-(*	GlMat.translate3 (-100.0, -150.0, -300.0);*)
 	GlMat.push ();
 	cam#draw;
 	part#draw;
@@ -49,6 +72,7 @@ let keyboard_cb ~key ~x ~y =
     | _ -> ()
 
 let rec update value =
+	timeline#tick;
 	part#step;
 	cam#step;
 	Glut.postRedisplay ();
@@ -72,9 +96,7 @@ let main () =
 		enable ();
     init width height;
 		part#load_frame;
-		part#set_animation ~invert:true (Random, 250., (Quart, EaseOut));
-		cam#set_animations ([ Translate((-100., -150., 0.), (0., -150., -350.)); Rotate(0., 40., (0., 1., 0.)) ], 500., (Linear, None));
-			
+		timeline#tick;
     Glut.displayFunc draw;
     Glut.keyboardFunc keyboard_cb;
     Glut.reshapeFunc reshape_cb;

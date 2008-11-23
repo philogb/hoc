@@ -11,37 +11,36 @@ object (self)
 	val mutable loaded_frame = ref ([] : depth_vertex list)
 	val mutable start_frame = ref ([] : depth_vertex list)
 	val mutable last_frame = ref ([] : depth_vertex list)
-	val mutable transition = ref  (Linear, None)
-	val mutable time = ref 0.
-	val mutable total_frames = ref 0.
+	val mutable transition = (Linear, None)
+	val mutable time = 0.
+	val mutable total_frames = 0.
 	
-	method get_time = !time
+	method get_time = time
 	
 	method set_animation ~invert (t: animation_op) =
 		let (trans, tf, trans_type) = t in
-		total_frames := tf;
 		let anim = ParticleTrans.get_trans trans in
 		if not invert then
 			begin
-				start_frame := !last_frame;
-				last_frame := anim !last_frame
+				start_frame := !loaded_frame;
+				last_frame := anim !loaded_frame
 			end
 		else
 			begin
-				start_frame := anim !last_frame;
-				last_frame := !last_frame
+				start_frame := anim !loaded_frame;
+				last_frame := !loaded_frame
 			end;
-		time := 0.;
-		total_frames := tf;
-		transition := trans_type
+		time <- 0.;
+		total_frames <- tf;
+		transition <- trans_type
 	
 	method step =
-		if !time < !total_frames then
-				time := !time +. 1.
+		if time < total_frames then
+				time <- time +. 1.
 	
 	method draw =
-		let delta = !time /. !total_frames in
-		let (trans, ease) = !transition in
+		let delta = time /. total_frames in
+		let (trans, ease) = transition in
 		let delta_val = Transition.get_animation trans ease delta in 
 			GlDraw.begins `points;
 			List.iter2 (fun x y ->
