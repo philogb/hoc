@@ -32,7 +32,7 @@ let lines ()=
 				let count = ref 0 in
 				try 
 					while true do
-						let line = input_line channel in
+						ignore (input_line channel);
 						count := !count + 1
 					done;
 				with End_of_file -> 

@@ -2,6 +2,7 @@ open Str
 open String
 open Pix_type
 open Particle
+open ParticleTrans
 open Camera
 open Transition
 
@@ -28,6 +29,7 @@ let draw () =
 	part#draw;
 	GlMat.pop ();
 	Glut.swapBuffers ()
+
 (* Handle window reshape events *)
 let reshape_cb ~w ~h =
   let 
@@ -47,7 +49,7 @@ let keyboard_cb ~key ~x ~y =
     | _ -> ()
 
 let rec update value =
-	part#step 0.025;
+	part#step;
 	cam#step;
 	Glut.postRedisplay ();
 	Glut.timerFunc ~ms:40 
@@ -70,9 +72,8 @@ let main () =
 		enable ();
     init width height;
 		part#load_frame;
-		part#load_animations;
-		part#set_animation Idle;
-		cam#set_animations ([ Translate((-100., -150., 0.), (0., -150., -350.)); Rotate(0., 40., (0., 1., 0.)) ], 250., (Quart, EaseOut));
+		part#set_animation ~invert:true (Random, 250., (Quart, EaseOut));
+		cam#set_animations ([ Translate((-100., -150., 0.), (0., -150., -350.)); Rotate(0., 40., (0., 1., 0.)) ], 500., (Linear, None));
 			
     Glut.displayFunc draw;
     Glut.keyboardFunc keyboard_cb;

@@ -1,57 +1,56 @@
 open Pix_type
 open Str
 open String
+open ParticleTrans
+open Transition
 
-type animation = Idle | Project;;
-type animation_function = animation * (depth_vertex list -> depth_vertex list);;
+type animation_op = transformation * float * (Transition.trans * Transition.ease)
 
 class particle_model =
 object (self)
-	val mutable animation_types = ref ([] : animation_function list)
 	val mutable loaded_frame = ref ([] : depth_vertex list)
 	val mutable start_frame = ref ([] : depth_vertex list)
 	val mutable last_frame = ref ([] : depth_vertex list)
+	val mutable transition = ref  (Linear, None)
 	val mutable time = ref 0.
+	val mutable total_frames = ref 0.
 	
 	method get_time = !time
 	
-	method set_animation ?(inv = false) (t: animation) =
-		let rec search_animation = function
-			| (tp, f1) :: tl when tp = t ->
-					if not inv then
-						begin
-							start_frame := !last_frame;
-							last_frame := f1 !last_frame
-						end
-					else
-						begin
-							start_frame := f1 !last_frame;
-							last_frame := !last_frame
-						end
-			
-			| hd :: tl -> search_animation tl
-			| [] -> ()
-		in
-		search_animation !animation_types;
-		time := 0.
-	
-	method step dt =
-		if dt > 0. then
+	method set_animation ~invert (t: animation_op) =
+		let (trans, tf, trans_type) = t in
+		total_frames := tf;
+		let anim = ParticleTrans.get_trans trans in
+		if not invert then
 			begin
-				time := !time +. dt;
-				if !time > 1.0 then
-					time := 1.
+				start_frame := !last_frame;
+				last_frame := anim !last_frame
 			end
+		else
+			begin
+				start_frame := anim !last_frame;
+				last_frame := !last_frame
+			end;
+		time := 0.;
+		total_frames := tf;
+		transition := trans_type
+	
+	method step =
+		if !time < !total_frames then
+				time := !time +. 1.
 	
 	method draw =
-		GlDraw.begins `points;
-		List.iter2 (fun x y ->
-						let Depth_vertex(x, y, z, d) = Interpolate.cartesian x y !time in
-						let color = d /. 255.0 in
-						GlDraw.color (color, color, color);
-						GlDraw.vertex ~x: x ~y: y ~z: z ()
-			) !start_frame !last_frame;
-		GlDraw.ends ()
+		let delta = !time /. !total_frames in
+		let (trans, ease) = !transition in
+		let delta_val = Transition.get_animation trans ease delta in 
+			GlDraw.begins `points;
+			List.iter2 (fun x y ->
+							let Depth_vertex(x, y, z, d) = Interpolate.cartesian x y delta_val in
+							let color = d /. 255.0 in
+							GlDraw.color (color, color, color);
+							GlDraw.vertex ~x: x ~y: y ~z: z ()
+				) !start_frame !last_frame;
+			GlDraw.ends ()
 	
 	method load_frame =
 		loaded_frame := [];
@@ -67,13 +66,4 @@ object (self)
 			close_in_noerr channel;
 			if List.length !last_frame = 0 then
 				last_frame := !loaded_frame
-
-	
-	method load_animations =
-		(* idle is identity *)
-		let anims = [(Idle, (fun x -> x));
-											 (Project, (fun x -> List.map (fun (Depth_vertex(x, y, z, d)) -> 
-																			Depth_vertex(x, y, 0., d)) x))]
-		in
-			List.iter (fun x -> animation_types := x :: !animation_types) anims;
-end;;
+end
