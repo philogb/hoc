@@ -1,18 +1,18 @@
 open Str
 open String
 open Color
-open Pix_type
+open VertexType
 
+(* Loads csv frames and saves the rendered OpenGL image *)
 let data =
 	object (self)
 		val path_to_file = "/home/nicolas/hoc/HoC1/"
 		val path_to_image_file = "/home/nicolas/hoc/HoC1/images/"
-		val total_frames = 2101
-		val mutable current_frame = ref 0
+		val mutable current_frame = 1
+		val total_frames = 900
 		val time_interval = 33
 		
-		method get_time_interval =
-			time_interval
+		method get_time_interval = 	time_interval
 		
 		method load_file filename =
 			let channel = open_in (path_to_file ^ filename) in
@@ -21,11 +21,12 @@ let data =
 					while true do
 						let line = input_line channel in
 						let sp = split (regexp ",") (sub line 0 (pred (length line))) in
-						let [ x; y; z; d ] = List.map float_of_string sp in
-						ans := Depth_vertex (x, y, z, d) :: !ans;
+						match List.map float_of_string sp with
+							| [ x; y; z; d ] -> ans := DVertex (x, y, z, d) :: !ans
+							| _ -> raise (Invalid_argument "not a depth vertex")
 					done;
 					!ans
-				with End_of_file -> close_in_noerr channel; !ans
+				with End_of_file | Invalid_argument _ -> close_in_noerr channel; !ans
 		
 		method save_image =
 				let img_rgb = new OImages.rgb24 600 400 in
@@ -45,17 +46,18 @@ let data =
 					in
 						img_rgb#set (i mod w) (i / w) color_rgb;
 				done;
-				img_rgb#save (path_to_image_file ^ "img" ^ (string_of_int !current_frame) ^ ".bmp")
-															None [];
+				img_rgb#save (path_to_image_file ^ "img" ^ (string_of_int current_frame) ^ ".bmp")
+															None []
 		
 		method next_frame =
-			current_frame := (!current_frame + 1) mod total_frames;
-			if !current_frame = 0 then
-				current_frame := total_frames;
-			self#load_file ((string_of_int !current_frame) ^ ".csv");
-		end;; 
+			current_frame <- (current_frame + 1) mod total_frames;
+			if current_frame = 0 then
+				current_frame <- total_frames;
+			self#load_file ((string_of_int current_frame) ^ ".csv")
+end
 
-let init_gl width height =
+(* Initializes openGL scene components*)
+let init width height =
 		GlDraw.point_size 0.5;
     GlDraw.shade_model `smooth;
     GlClear.color (0.0, 0.0, 0.0);
@@ -65,20 +67,21 @@ let init_gl width height =
     GlFunc.depth_func `lequal;
     GlMisc.hint `perspective_correction `nicest
 
-let draw_gl_scene () =
+(*	Draws the image*)
+let draw () =
   GlClear.clear [`color; `depth];
   GlMat.load_identity ();
 	GlMat.translate3 (-150.0, -150.0, -400.0);
 	GlDraw.begins `points;
-	List.iter (fun (Depth_vertex (x, y, z, d)) ->
-		let color = d /. 255.0 in
-			GlDraw.color (color /. 1.1, color /. 1.5, color);
-			GlDraw.vertex ~x:x ~y:y ~z:z ()) (data#next_frame);
+	List.iter (fun (DVertex (x, y, z, d)) ->
+		let color = d /. 90. in
+			GlDraw.color (color, color, color);
+			GlDraw.vertex ~x:x ~y:y ~z:z ()) data#next_frame;
 	GlDraw.ends ();
   Glut.swapBuffers ();
-	data#save_image;;
+	data#save_image
 
-(* Handle window reshape events *)
+(* Handle window resize *)
 let reshape_cb ~w ~h =
   let 
     ratio = (float_of_int w) /. (float_of_int h) 
@@ -96,24 +99,13 @@ let keyboard_cb ~key ~x ~y =
     | 27 (* ESC *) -> exit 0
     | _ -> ()
 
+(* A timer function setted to draw a new frame each time_interval ms *)
 let rec timer value =
-	if value = 1 then
-		Glut.postRedisplay ();
-	Glut.timerFunc ~ms:data#get_time_interval ~cb:(fun ~value:x -> (timer x)) ~value:value;;
+	Glut.postRedisplay ();
+	Glut.timerFunc ~ms:data#get_time_interval 
+											  ~cb:(fun ~value:x -> (timer x)) ~value:value
 
-let visibility (state:Glut.visibility_state_t) =
-	match state with
-		| Glut.VISIBLE -> timer 1
-		| _ -> timer 0;;
-
-let enable () =
-	Gl.enable `lighting;
-	Gl.enable `depth_test;
-	Gl.enable `light0;
-	Gl.enable `polygon_smooth;
-	Gl.enable `color_material
-
-
+(*	Main program function*)
 let main () =
   let 
     width = 640 and
@@ -123,15 +115,13 @@ let main () =
     Glut.initDisplayMode ~alpha:true ~depth:true ~double_buffer:true ();
     Glut.initWindowSize width height;
     ignore (Glut.createWindow "Ocaml + OpenGL + radiohead = Fun");
-    Glut.displayFunc draw_gl_scene;
+    Glut.displayFunc draw;
     Glut.keyboardFunc keyboard_cb;
     Glut.reshapeFunc reshape_cb;
 		Glut.timerFunc ~ms:data#get_time_interval 
 												 ~cb:(fun ~value:x -> (timer x)) 
 												 ~value:1;
-		Glut.visibilityFunc ~cb:(fun ~state -> (visibility state));
-		enable ();
-    init_gl width height;
+    init width height;
 		Glut.mainLoop ()
 
 let _ = main ()

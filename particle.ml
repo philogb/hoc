@@ -1,4 +1,4 @@
-open Pix_type
+open VertexType
 open Str
 open String
 open ParticleTrans
@@ -22,7 +22,7 @@ object (self)
 		let anim = ParticleTrans.get_trans trans in
 		if not invert then
 			begin
-				start_frame := !loaded_frame;
+				start_frame := !last_frame;
 				last_frame := anim !loaded_frame
 			end
 		else
@@ -44,25 +44,20 @@ object (self)
 		let delta_val = Transition.get_animation trans ease delta in 
 			GlDraw.begins `points;
 			List.iter2 (fun x y ->
-							let Depth_vertex(x, y, z, d) = Interpolate.cartesian x y delta_val in
+							let DVertex(x, y, z, d) = Interpolate.cartesian x y delta_val in
 							let color = d /. 255.0 in
 							GlDraw.color (color, color, color);
 							GlDraw.vertex ~x: x ~y: y ~z: z ()
 				) !start_frame !last_frame;
 			GlDraw.ends ()
 	
-	method load_frame =
-		loaded_frame := [];
-		let channel = open_in "/home/nicolas/hoc/HoC1/1.csv" in
-		try
-			while true do
-				let line = input_line channel in
-				let sp = split (regexp ",") (sub line 0 (pred (length line))) in
-				let [ x; y; z; d ] = List.map float_of_string sp in
-				loaded_frame := Depth_vertex (x, y, z, d) :: !loaded_frame;
-			done;
-		with End_of_file -> 
-			close_in_noerr channel;
-			if List.length !last_frame = 0 then
-				last_frame := !loaded_frame
+	method draw_frame frame =
+			GlDraw.begins `points;
+			List.iter (fun (DVertex(x, y, z, d)) ->
+							let color = d /. 90.0 in
+							GlDraw.color (color, color, color);
+							GlDraw.vertex ~x: x ~y: y ~z: z ()
+				) frame;
+			GlDraw.ends ()
+
 end

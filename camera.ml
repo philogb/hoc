@@ -1,11 +1,11 @@
-open Pix_type
+open VertexType
 open Transition
 
 type camera_op = 
 	| Translate of Gl.point3 * Gl.point3  
 	| Rotate of float * float * Gl.vect3
 
-type camera_op_list = (camera_op list) * float * (Transition.trans * Transition.ease)
+type camera_op_list = (camera_op list) * float * (trans * ease)
 
 class camera_model =
 object (self)
@@ -18,8 +18,8 @@ object (self)
 	
 	method set_animations ans =
 		let (x, y, z) = ans in
-			total_frames <- y;
 			animations <- x;
+			total_frames <- y;
 			transition <- z;
 			time <- 0.
 	
@@ -32,9 +32,9 @@ object (self)
 		let delta_val = Transition.get_animation trans ease delta in 
 		let (x, y, z) = start in
 		let (x', y', z') = last in
-		let Depth_vertex(a, b, c, d) = Interpolate.cartesian (Depth_vertex(x, y, z, 0.)) 
-																																						(Depth_vertex(x', y', z', 0.)) 
-																																						delta_val
+		let DVertex(a, b, c, d) = Interpolate.cartesian (DVertex(x, y, z, 0.)) 
+																										(DVertex(x', y', z', 0.)) 
+																										delta_val
 		in
 			GlMat.translate3 (a, b, c)
 	
