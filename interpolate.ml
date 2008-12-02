@@ -20,13 +20,13 @@ let cartesian (DVertex(x, y, z, d)) (DVertex(x', y', z', d')) r =
 		z'' = l z z' in
 			DVertex(x'', y'', z'', d)
 
-let spherical (DVertex(x, y, z, d)) (DVertex(x', y', z', d')) r =
-	let prod = x *. x' +. y *. y' +. z *. z' in
-	let omega = sin prod in
-	let c = (sin ((1. -. r) *. prod)) /. omega in
-	let d = (sin (r *. omega)) /. omega in
-	let [| xt; yt; zt |] = Array.map (fun x -> x *. c) [| x; y; z |] in
-	let [| xt'; yt'; zt' |] = Array.map (fun x -> x *. d) [| x'; y'; z' |] in
-	DVertex(xt +. xt', yt +. yt', zt +. zt', d)
+(*let spherical (DVertex(x, y, z, d)) (DVertex(x', y', z', d')) r =          *)
+(*	let prod = x *. x' +. y *. y' +. z *. z' in                              *)
+(*	let omega = sin prod in                                                  *)
+(*	let c = (sin ((1. -. r) *. prod)) /. omega in                            *)
+(*	let d = (sin (r *. omega)) /. omega in                                   *)
+(*	let [| xt; yt; zt |] = Array.map (fun x -> x *. c) [| x; y; z |] in      *)
+(*	let [| xt'; yt'; zt' |] = Array.map (fun x -> x *. d) [| x'; y'; z' |] in*)
+(*	DVertex(xt +. xt', yt +. yt', zt +. zt', d)                              *)
 			
 		

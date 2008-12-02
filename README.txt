@@ -11,6 +11,11 @@ build with:
  
  ffmpeg -f image2 -r 30 -i ./img%d.bmp -sameq ./out.mpeg -pass 2
  
+
+TUTORIAL PART 2:
+ocamlc -g str.cma -I +camlimages ci_core.cma ci_jpeg.cma ci_bmp.cma -I +lablGL lablglut.cma lablgl.cma interpolate.ml transition.ml camera.ml loader.ml main.ml -o main 
+
+
  ANIMATION
  
 ocamlc -g str.cma -I +camlimages ci_core.cma ci_jpeg.cma ci_bmp.cma -I +lablGL lablglut.cma lablgl.cma interpolate.ml transition.ml particleTrans.ml camera.ml particle.ml loader.ml animation.ml -o animation 
