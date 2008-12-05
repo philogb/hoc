@@ -17,9 +17,9 @@ let timeline =
 			(631., ([ Translate((0., -150., -50.), (-100., -150., -450.)) ], 250., (Quart, EaseOut))) ]
 		
 		val particle_timeline = [
-			(1., (true, (Random, 250., (Quart, EaseOut))));
-			(701., (false, (Random, 50., (Quart, EaseOut))));
-			(762., (false, (Idle, 300., (Quart, EaseOut))))
+			(1., (true, true, (Random, 90., (Quart, EaseOut))));
+(*			(281., (false, false, (Random, 50., (Quart, EaseOut))));*)
+(*			(350., (false, true, (Idle, 300., (Quart, EaseOut))))   *)
 			]
 			
 		method get_frame = frame
@@ -27,7 +27,7 @@ let timeline =
 		method tick =
 			frame <- frame +. 1.;
 			self#update_camera;
-(*			self#update_animation;*)
+			self#update_animation
 		
 		method update_camera =
 			try
@@ -38,8 +38,8 @@ let timeline =
 		
 		method update_animation =
 			try
-				let (inv, part_anim) = List.assoc frame particle_timeline in
-					part#set_animation ~invert:inv part_anim;
+				let anim = List.assoc frame particle_timeline in
+					part#set_animation frame anim;
 			with
 					| Not_found -> ()
 end
@@ -60,7 +60,7 @@ let draw () =
   GlMat.load_identity ();
 	GlMat.push ();
 	cam#draw;
-	part#draw_frame (Loader.get_frame (int_of_float timeline#get_frame));
+	part#draw timeline#get_frame;
 	GlMat.pop ();
 	Glut.swapBuffers ();
 	Loader.save_frame (int_of_float timeline#get_frame)
