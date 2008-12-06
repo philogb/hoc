@@ -18,9 +18,9 @@ class particle_model =
 	val mutable time = 0.
 	val mutable total_frames = 0.
 	val mutable refresh_frames = false
-	val mutable last_frame_number = 0.
 	
 	method get_time = time
+	method get_total_frames = total_frames
 	
 	method set_animation current_frame anim =
 		let (inv, refresh_after, t) = anim in
@@ -42,19 +42,19 @@ class particle_model =
 		time <- 0.;
 		total_frames <- tf;
 		transition <- trans_type;
-		refresh_frames <- refresh_after;
-		last_frame_number <- current_frame +. tf
+		refresh_frames <- refresh_after
 	
 	method step =
 		if time < total_frames then
 				time <- time +. 1.
 	
 	method draw current_frame =
-		if current_frame >= last_frame_number && refresh_frames then
+		if time = total_frames && refresh_frames then
 			begin
-				last_frame <- Loader.get_frame (iof current_frame);
-				loaded_frame <- last_frame;
-				self#balance
+				loaded_frame <- Loader.get_frame (iof current_frame);
+				last_frame <- loaded_frame;
+				start_frame <- loaded_frame
+(*				self#balance*)
 			end;	
 		
 		let delta = time /. total_frames in

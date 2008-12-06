@@ -10,9 +10,9 @@ let timeline =
 	object (self)
 		val mutable frame = 0.
 		val camera_timeline = [
-			(1., ([ Translate((-100., -150., 0.), (0., -150., -350.)); Rotate(0., 40., (0., 1., 0.)) ], 300., (Quart, EaseInOut)));
-			(310., ([ Translate((0., -150., -350.), (-100., -150., -300.)); Rotate(40., -40., (0., 1., 0.)) ], 300., (Quart, EaseInOut)));
-			(631., ([ Translate((0., -150., -50.), (-100., -150., -450.)) ], 250., (Quart, EaseOut))) ]
+			(1., ([ Translate((-100., -150., 0.), (0., -150., -350.)); Rotate(0., 40., (0., 1., 0.)) ], 300., (Quad, EaseInOut)));
+			(310., ([ Translate((0., -150., -350.), (-100., -150., -300.)); Rotate(40., -40., (0., 1., 0.)) ], 300., (Quad, EaseInOut)));
+			(631., ([ Translate((0., -150., -50.), (-100., -150., -450.)) ], 250., (Quad, EaseOut))) ]
 		
 		method get_frame = frame
 		

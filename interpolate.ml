@@ -17,8 +17,9 @@ let cartesian (DVertex(x, y, z, d)) (DVertex(x', y', z', d')) r =
 	let l x x' = x +. (x' -. x) *. r in
 		let x'' = l x x' and
 		y'' = l y y' and
-		z'' = l z z' in
-			DVertex(x'', y'', z'', d)
+		z'' = l z z' and
+		d'' = l d d' in
+			DVertex(x'', y'', z'', d'')
 
 (*let spherical (DVertex(x, y, z, d)) (DVertex(x', y', z', d')) r =          *)
 (*	let prod = x *. x' +. y *. y' +. z *. z' in                              *)

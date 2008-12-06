@@ -5,6 +5,8 @@ open ParticleTrans
 open Camera
 open Transition
 
+let iof = int_of_float
+
 let part = new particle_model
 let cam = new camera_model
 
@@ -12,14 +14,15 @@ let timeline =
 	object (self)
 		val mutable frame = 0.
 		val camera_timeline = [
-			(1., ([ Translate((-100., -150., 0.), (0., -150., -350.)); Rotate(0., 40., (0., 1., 0.)) ], 300., (Quart, EaseInOut)));
-			(310., ([ Translate((0., -150., -350.), (-100., -150., -300.)); Rotate(40., -40., (0., 1., 0.)) ], 300., (Quart, EaseInOut)));
-			(631., ([ Translate((0., -150., -50.), (-100., -150., -450.)) ], 250., (Quart, EaseOut))) ]
+			(1., ([ Translate((-100., -150., 0.), (0., -150., -350.)); Rotate(0., 40., (0., 1., 0.)) ], 300., (Quad, EaseInOut)));
+			(310., ([ Translate((0., -150., -350.), (-100., -150., -300.)); Rotate(40., -40., (0., 1., 0.)) ], 300., (Quad, EaseInOut)));
+			(631., ([ Translate((0., -150., -50.), (-100., -150., -450.)) ], 250., (Back, EaseOut)))                                     
+			]
 		
 		val particle_timeline = [
-			(1., (true, true, (Random, 90., (Quart, EaseOut))));
-(*			(281., (false, false, (Random, 50., (Quart, EaseOut))));*)
-(*			(350., (false, true, (Idle, 300., (Quart, EaseOut))))   *)
+			(1., (true, true, (Random, 190., (Elastic, EaseOut))));
+			(281., (false, false, (Random, 50., (Quad, EaseOut))));
+			(350., (false, true, (Idle, 200., (Quad, EaseIn))))
 			]
 			
 		method get_frame = frame
@@ -45,7 +48,7 @@ let timeline =
 end
 
 let init width height =
-	GlDraw.point_size 0.5;
+	GlDraw.point_size 4.;
 	GlDraw.shade_model `smooth;
 	GlClear.color (0.0, 0.0, 0.0);
 	GlClear.depth 1.0;
@@ -63,8 +66,8 @@ let draw () =
 	part#draw timeline#get_frame;
 	GlMat.pop ();
 	Glut.swapBuffers ();
-	Loader.save_frame (int_of_float timeline#get_frame)
-
+	Loader.save_frame (iof timeline#get_frame)
+	
 (* Handle window reshape events *)
 let reshape_cb ~w ~h =
   let 
@@ -88,7 +91,7 @@ let rec update value =
 	part#step;
 	cam#step;
 	Glut.postRedisplay ();
-	Glut.timerFunc ~ms:33 
+	Glut.timerFunc ~ms:10 
 								 ~cb:(fun ~value:x -> (update x)) 
 								 ~value:1
 
@@ -111,7 +114,7 @@ let main () =
     Glut.displayFunc draw;
     Glut.keyboardFunc keyboard_cb;
     Glut.reshapeFunc reshape_cb;
-		Glut.timerFunc ~ms:33 
+		Glut.timerFunc ~ms:10 
 									 ~cb:(fun ~value:x -> (update x)) 
 									 ~value:1;
 		Glut.mainLoop ()
