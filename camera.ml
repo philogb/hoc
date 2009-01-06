@@ -51,4 +51,4 @@ object (self)
 					match anim with
 						| Translate(start, last) -> self#translate start last delta
 						| Rotate(start, last, vec) -> self#rotate start last vec delta ) animations
-end;;
+end

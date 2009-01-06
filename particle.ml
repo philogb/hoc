@@ -6,21 +6,17 @@ open Transition
 
 type animation_op = transformation * float * (Transition.trans * Transition.ease)
 
-let foi = float_of_int
 let iof = int_of_float
 
 class particle_model =
  object (self)
-	val mutable loaded_frame = ([] : depth_vertex list)
 	val mutable start_frame = ([] : depth_vertex list)
-	val mutable last_frame = ([] : depth_vertex list)
+	val mutable last_frame =  ([] : depth_vertex list)
+	val mutable loaded_frame =([] : depth_vertex list)
 	val mutable transition = (Linear, None)
 	val mutable time = 0.
 	val mutable total_frames = 0.
 	val mutable refresh_frames = false
-	
-	method get_time = time
-	method get_total_frames = total_frames
 	
 	method set_animation current_frame anim =
 		let (inv, refresh_after, t) = anim in
@@ -39,6 +35,7 @@ class particle_model =
 				last_frame <- loaded_frame
 			end;
 		self#balance;
+
 		time <- 0.;
 		total_frames <- tf;
 		transition <- trans_type;
@@ -54,7 +51,6 @@ class particle_model =
 				loaded_frame <- Loader.get_frame (iof current_frame);
 				last_frame <- loaded_frame;
 				start_frame <- loaded_frame
-(*				self#balance*)
 			end;	
 		
 		let delta = time /. total_frames in
@@ -77,17 +73,6 @@ class particle_model =
 				if start < last then
 					start_frame <- (List.hd start_frame) :: start_frame
 				else
-					last_frame <- (List.hd last_frame) :: last_frame
+					last_frame  <- (List.hd last_frame) :: last_frame
 			done
-		
-			
-(*	method draw_frame frame =                      *)
-(*			GlDraw.begins `points;                     *)
-(*			List.iter (fun (DVertex(x, y, z, d)) ->    *)
-(*							let color = d /. 90.0 in           *)
-(*							GlDraw.color (color, color, color);*)
-(*							GlDraw.vertex ~x: x ~y: y ~z: z () *)
-(*				) frame;                                 *)
-(*			GlDraw.ends ()                             *)
-
 end

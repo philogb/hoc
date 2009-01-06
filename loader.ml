@@ -34,6 +34,7 @@ let save_frame num =
 	let raw = Raw.gets ~pos:0 ~len:(Raw.byte_size praw) praw in
 	let w = GlPix.width pixels in
 	let h = GlPix.height pixels in
+
 	for i = 0 to pred (w * h) do
 		let color_rgb = { r = raw.(i * 3 + 2); 
 											g = raw.(i * 3 + 1); 
@@ -41,5 +42,6 @@ let save_frame num =
 		in
 			img_rgb#set (i mod w) (i / w) color_rgb;
 	done;
+	
 	img_rgb#save (img_path ^ "img" ^ (soi num) ^ ".bmp")
 												None []

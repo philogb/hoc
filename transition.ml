@@ -1,4 +1,14 @@
-type trans = Linear | Quad | Cubic | Quart | Quint | Circ | Sine | Back | Elastic
+type trans = 
+	| Linear 
+	| Quad 
+	| Cubic 
+	| Quart 
+	| Quint 
+	| Circ 
+	| Sine 
+	| Back 
+	| Elastic
+
 type ease = None | EaseOut | EaseIn | EaseInOut
 
 let pi = (acos 0.) *. 2.

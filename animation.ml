@@ -5,24 +5,26 @@ open ParticleTrans
 open Camera
 open Transition
 
-let iof = int_of_float
-
 let part = new particle_model
-let cam = new camera_model
+let cam =  new camera_model
 
 let timeline = 
 	object (self)
 		val mutable frame = 0.
 		val camera_timeline = [
-			(1., ([ Translate((-100., -150., 0.), (0., -150., -350.)); Rotate(0., 40., (0., 1., 0.)) ], 300., (Quad, EaseInOut)));
-			(310., ([ Translate((0., -150., -350.), (-100., -150., -300.)); Rotate(40., -40., (0., 1., 0.)) ], 300., (Quad, EaseInOut)));
-			(631., ([ Translate((0., -150., -50.), (-100., -150., -450.)) ], 250., (Back, EaseOut)))                                     
+			(1., ([ Translate((-100., -150., 0.), (0., -150., -350.)); 
+							Rotate(0., 40., (0., 1., 0.)) 
+						], 300., (Quad, EaseInOut)));
+
+			(310., ([ Translate((0., -150., -350.), (-100., -150., -300.)); 
+								Rotate(40., -40., (0., 1., 0.)) 
+							], 300., (Quad, EaseInOut)))
 			]
 		
 		val particle_timeline = [
-			(1., (true, true, (Random, 190., (Elastic, EaseOut))));
-			(281., (false, false, (Random, 50., (Quad, EaseOut))));
-			(350., (false, true, (Idle, 200., (Quad, EaseIn))))
+			(1., (true, true, (Random, 120., (Elastic, EaseOut))));
+			(420., (false, false, (Random, 50., (Quad, EaseOut))));
+			(471., (false, true, (Idle, 80., (Quad, EaseIn))))
 			]
 			
 		method get_frame = frame
@@ -49,7 +51,6 @@ end
 
 let init width height =
 	GlDraw.point_size 4.;
-	GlDraw.shade_model `smooth;
 	GlClear.color (0.0, 0.0, 0.0);
 	GlClear.depth 1.0;
 	GlClear.clear [`color; `depth];
@@ -66,7 +67,7 @@ let draw () =
 	part#draw timeline#get_frame;
 	GlMat.pop ();
 	Glut.swapBuffers ();
-	Loader.save_frame (iof timeline#get_frame)
+	Loader.save_frame (int_of_float timeline#get_frame)
 	
 (* Handle window reshape events *)
 let reshape_cb ~w ~h =
@@ -77,9 +78,8 @@ let reshape_cb ~w ~h =
     GlMat.mode `projection;
     GlMat.load_identity ();
     GluMat.perspective 45.0 ratio (0.1, 800.0);
-    GlMat.mode `modelview;
-    GlMat.load_identity ()
-
+    GlMat.mode `modelview
+		
 (* Handle keyboard events *)
 let keyboard_cb ~key ~x ~y =
   match key with
@@ -95,9 +95,6 @@ let rec update value =
 								 ~cb:(fun ~value:x -> (update x)) 
 								 ~value:1
 
-let enable () =
-	Gl.enable `depth_test
-
 let main () =
   let 
     width = 1000 and
@@ -106,9 +103,7 @@ let main () =
 		ignore (Glut.init Sys.argv);
     Glut.initDisplayMode ~alpha:true ~depth:true ~double_buffer:true ();
     Glut.initWindowSize width height;
-    ignore (Glut.createWindow "Ocaml + OpenGL + radiohead = Fun");
-
-		enable ();
+    ignore (Glut.createWindow "Particle Visualizer");
     init width height;
 		timeline#tick;
     Glut.displayFunc draw;
