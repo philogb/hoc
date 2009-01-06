@@ -1,12 +1,19 @@
+(** Loads CSV files and saves OpenGL rendered images into bmp or jpeg files *)
+
 open Str
 open String
 open VertexType
 open Color
 
 let soi = string_of_int
+
+(** Path to CSV files *)
 let path = "/home/nicolas/hoc/HoC1/"
+
+(** Path to image files *)
 let img_path = "/home/nicolas/hoc/HoC1/images/"
 		
+(** Loads a CSV file and returns a 4D vertex array *)
 let load_file filename =
 	let channel = open_in (path ^ filename) in
 	let ans = ref [] in
@@ -21,8 +28,10 @@ let load_file filename =
 			!ans
 		with End_of_file | Invalid_argument _ -> close_in_noerr channel; !ans
 		
+(** Returns a specific frame *)
 let get_frame num = load_file ((soi num) ^ ".csv")
 
+(** Saves the rendered OpenGL image into bmp or jpeg files *)
 let save_frame num =
 	let img_rgb = new OImages.rgb24 1000 600 in
 	let pixels = GlPix.read 

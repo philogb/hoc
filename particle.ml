@@ -1,13 +1,20 @@
+(** The particule module handles particle transformations/interpolations *)
+
 open VertexType
 open Str
 open String
 open ParticleTrans
 open Transition
 
+(** Similar to the Camera transition, an animation operation is a
+    particle transformation, its duration and special information about
+		how this animation is done *)
 type animation_op = transformation * float * (Transition.trans * Transition.ease)
 
 let iof = int_of_float
 
+(** The particule model handles the logic for particle animation/interpolation 
+    @see camera_model *)
 class particle_model =
  object (self)
 	val mutable start_frame = ([] : depth_vertex list)
@@ -18,6 +25,7 @@ class particle_model =
 	val mutable total_frames = 0.
 	val mutable refresh_frames = false
 	
+	(** Sets the current particle animation/interpolation to be performed *)
 	method set_animation current_frame anim =
 		let (inv, refresh_after, t) = anim in
 		let (trans, tf, trans_type) = t in
@@ -41,10 +49,12 @@ class particle_model =
 		transition <- trans_type;
 		refresh_frames <- refresh_after
 	
+	(** Increases relative animation time *)
 	method step =
 		if time < total_frames then
 				time <- time +. 1.
-	
+
+	(** Interpolates the particle, rendering the result *)
 	method draw current_frame =
 		if time = total_frames && refresh_frames then
 			begin
@@ -65,6 +75,7 @@ class particle_model =
 				) start_frame last_frame;
 			GlDraw.ends ()
 
+	(** Balances the first or the last frame in order to have the same amount of particles *)
 		method balance =
 			let len = List.length in
 			let start, last = (len start_frame, len last_frame) in
