@@ -1,0 +1,41 @@
+<html><head>
+<link rel="stylesheet" href="style.css" type="text/css">
+<meta content="text/html; charset=iso-8859-1" http-equiv="Content-Type">
+<link rel="Start" href="index.html">
+<link title="Index of types" rel=Appendix href="index_types.html">
+<link title="Index of values" rel=Appendix href="index_values.html">
+<link title="Index of class attributes" rel=Appendix href="index_attributes.html">
+<link title="Index of class methods" rel=Appendix href="index_methods.html">
+<link title="Index of classes" rel=Appendix href="index_classes.html">
+<link title="Index of modules" rel=Appendix href="index_modules.html">
+<link title="Interpolate" rel="Chapter" href="Interpolate.html">
+<link title="Transition" rel="Chapter" href="Transition.html">
+<link title="Camera" rel="Chapter" href="Camera.html">
+<link title="Loader" rel="Chapter" href="Loader.html">
+<link title="ParticleTrans" rel="Chapter" href="ParticleTrans.html">
+<link title="Particle" rel="Chapter" href="Particle.html">
+<link title="Main" rel="Chapter" href="Main.html"><title>Loader.save_frame</title>
+</head>
+<body>
+<code class="code"><span class="keyword">let</span>&nbsp;save_frame&nbsp;num&nbsp;=<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">let</span>&nbsp;img_rgb&nbsp;=&nbsp;<span class="keyword">new</span>&nbsp;<span class="constructor">OImages</span>.rgb24&nbsp;1000&nbsp;600&nbsp;<span class="keyword">in</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">let</span>&nbsp;pixels&nbsp;=&nbsp;<span class="constructor">GlPix</span>.read&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;~x:0&nbsp;~y:0&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;~width:1000&nbsp;~height:600&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;~format:<span class="keywordsign">`</span>rgb&nbsp;~kind:<span class="keywordsign">`</span>ubyte<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">in</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">let</span>&nbsp;praw&nbsp;=&nbsp;<span class="constructor">GlPix</span>.to_raw&nbsp;pixels&nbsp;<span class="keyword">in</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">let</span>&nbsp;raw&nbsp;=&nbsp;<span class="constructor">Raw</span>.gets&nbsp;~pos:0&nbsp;~len:(<span class="constructor">Raw</span>.byte_size&nbsp;praw)&nbsp;praw&nbsp;<span class="keyword">in</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">let</span>&nbsp;w&nbsp;=&nbsp;<span class="constructor">GlPix</span>.width&nbsp;pixels&nbsp;<span class="keyword">in</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">let</span>&nbsp;h&nbsp;=&nbsp;<span class="constructor">GlPix</span>.height&nbsp;pixels&nbsp;<span class="keyword">in</span><br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">for</span>&nbsp;i&nbsp;=&nbsp;0&nbsp;<span class="keyword">to</span>&nbsp;pred&nbsp;(w&nbsp;*&nbsp;h)&nbsp;<span class="keyword">do</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">let</span>&nbsp;color_rgb&nbsp;=&nbsp;{&nbsp;r&nbsp;=&nbsp;raw.(i&nbsp;*&nbsp;3&nbsp;+&nbsp;2);&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;g&nbsp;=&nbsp;raw.(i&nbsp;*&nbsp;3&nbsp;+&nbsp;1);&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;b&nbsp;=&nbsp;raw.(i&nbsp;*&nbsp;3&nbsp;+&nbsp;0)&nbsp;}&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">in</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;img_rgb<span class="keywordsign">#</span>set&nbsp;(i&nbsp;<span class="keyword">mod</span>&nbsp;w)&nbsp;(i&nbsp;/&nbsp;w)&nbsp;color_rgb;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">done</span>;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;img_rgb<span class="keywordsign">#</span>save&nbsp;(img_path&nbsp;^&nbsp;<span class="string">"img"</span>&nbsp;^&nbsp;(soi&nbsp;num)&nbsp;^&nbsp;<span class="string">".bmp"</span>)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">None</span>&nbsp;[]</code></body></html>

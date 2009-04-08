@@ -8,10 +8,10 @@ open Color
 let soi = string_of_int
 
 (** Path to CSV files *)
-let path = "/home/nicolas/hoc/HoC1/"
+let path = "./csv/"
 
 (** Path to image files *)
-let img_path = "/home/nicolas/hoc/HoC1/images/"
+let img_path = "./frames/"
         
 (** Loads a CSV file and returns a 4D vertex array *)
 let load_file filename =

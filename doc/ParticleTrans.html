@@ -1,0 +1,77 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<link rel="stylesheet" href="style.css" type="text/css">
+<meta content="text/html; charset=iso-8859-1" http-equiv="Content-Type">
+<link rel="Start" href="index.html">
+<link rel="previous" href="Loader.html">
+<link rel="next" href="Particle.html">
+<link rel="Up" href="index.html">
+<link title="Index of types" rel=Appendix href="index_types.html">
+<link title="Index of values" rel=Appendix href="index_values.html">
+<link title="Index of class attributes" rel=Appendix href="index_attributes.html">
+<link title="Index of class methods" rel=Appendix href="index_methods.html">
+<link title="Index of classes" rel=Appendix href="index_classes.html">
+<link title="Index of modules" rel=Appendix href="index_modules.html">
+<link title="Interpolate" rel="Chapter" href="Interpolate.html">
+<link title="Transition" rel="Chapter" href="Transition.html">
+<link title="Camera" rel="Chapter" href="Camera.html">
+<link title="Loader" rel="Chapter" href="Loader.html">
+<link title="ParticleTrans" rel="Chapter" href="ParticleTrans.html">
+<link title="Particle" rel="Chapter" href="Particle.html">
+<link title="Main" rel="Chapter" href="Main.html"><title>ParticleTrans</title>
+</head>
+<body>
+<div class="navbar"><a href="Loader.html">Previous</a>
+&nbsp;<a href="index.html">Up</a>
+&nbsp;<a href="Particle.html">Next</a>
+</div>
+<center><h1>Module <a href="type_ParticleTrans.html">ParticleTrans</a></h1></center>
+<br>
+<pre><span class="keyword">module</span> ParticleTrans: <code class="code">sig</code> <a href="ParticleTrans.html">..</a> <code class="code">end</code></pre>This module provides multiple particle transformations.
+    A particle transformation takes a frame as formal parameter and
+        returns a frame.
+        Custom frame transformations should be appended here<br>
+<hr width="100%">
+<br><code><span class="keyword">type</span> <a name="TYPEtransformation"></a><code class="type"></code>transformation = </code><table class="typetable">
+<tr>
+<td align="left" valign="top" >
+<code><span class="keyword">|</span></code></td>
+<td align="left" valign="top" >
+<code><span class="constructor">Idle</span></code></td>
+
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code><span class="keyword">|</span></code></td>
+<td align="left" valign="top" >
+<code><span class="constructor">Project</span> <span class="keyword">of</span> <code class="type">float * float * float</code></code></td>
+
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code><span class="keyword">|</span></code></td>
+<td align="left" valign="top" >
+<code><span class="constructor">Random</span></code></td>
+
+</tr></table>
+
+<div class="info">
+Frame/Particle transformations should be defined as type constructors<br>
+</div>
+
+<pre><span class="keyword">val</span> <a name="VALidle"></a><a href="code_VALParticleTrans.idle.html">idle</a> : <code class="type">'a -> 'a</code></pre><div class="info">
+Idle transformation does nothing<br>
+</div>
+<pre><span class="keyword">val</span> <a name="VALproject"></a><a href="code_VALParticleTrans.project.html">project</a> : <code class="type"><a href="ParticleTrans.html#TYPEtransformation">transformation</a> -><br>       VertexType.depth_vertex list -> VertexType.depth_vertex list</code></pre><div class="info">
+Project transformation projects all particles to a surface<br>
+</div>
+<pre><span class="keyword">val</span> <a name="VALrandom"></a><a href="code_VALParticleTrans.random.html">random</a> : <code class="type">VertexType.depth_vertex list -> VertexType.depth_vertex list</code></pre><div class="info">
+Random transformation assigns a random position to each particle<br>
+</div>
+<pre><span class="keyword">val</span> <a name="VALget_trans"></a><a href="code_VALParticleTrans.get_trans.html">get_trans</a> : <code class="type"><a href="ParticleTrans.html#TYPEtransformation">transformation</a> -><br>       VertexType.depth_vertex list -> VertexType.depth_vertex list</code></pre><div class="info">
+Transformation Dispatcher<br>
+<b>Returns</b> Transformation function<br>
+</div>
+<div class="param_info"><code class="code">t</code> : Transformation Type Constructor</div>
+</body></html>

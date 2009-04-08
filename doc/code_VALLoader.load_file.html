@@ -1,0 +1,32 @@
+<html><head>
+<link rel="stylesheet" href="style.css" type="text/css">
+<meta content="text/html; charset=iso-8859-1" http-equiv="Content-Type">
+<link rel="Start" href="index.html">
+<link title="Index of types" rel=Appendix href="index_types.html">
+<link title="Index of values" rel=Appendix href="index_values.html">
+<link title="Index of class attributes" rel=Appendix href="index_attributes.html">
+<link title="Index of class methods" rel=Appendix href="index_methods.html">
+<link title="Index of classes" rel=Appendix href="index_classes.html">
+<link title="Index of modules" rel=Appendix href="index_modules.html">
+<link title="Interpolate" rel="Chapter" href="Interpolate.html">
+<link title="Transition" rel="Chapter" href="Transition.html">
+<link title="Camera" rel="Chapter" href="Camera.html">
+<link title="Loader" rel="Chapter" href="Loader.html">
+<link title="ParticleTrans" rel="Chapter" href="ParticleTrans.html">
+<link title="Particle" rel="Chapter" href="Particle.html">
+<link title="Main" rel="Chapter" href="Main.html"><title>Loader.load_file</title>
+</head>
+<body>
+<code class="code"><span class="keyword">let</span>&nbsp;load_file&nbsp;filename&nbsp;=<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">let</span>&nbsp;channel&nbsp;=&nbsp;open_in&nbsp;(path&nbsp;^&nbsp;filename)&nbsp;<span class="keyword">in</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">let</span>&nbsp;ans&nbsp;=&nbsp;ref&nbsp;[]&nbsp;<span class="keyword">in</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">try</span>&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">while</span>&nbsp;<span class="keyword">true</span>&nbsp;<span class="keyword">do</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">let</span>&nbsp;line&nbsp;=&nbsp;input_line&nbsp;channel&nbsp;<span class="keyword">in</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">let</span>&nbsp;sp&nbsp;=&nbsp;split&nbsp;(regexp&nbsp;<span class="string">","</span>)&nbsp;(sub&nbsp;line&nbsp;0&nbsp;(pred&nbsp;(length&nbsp;line)))&nbsp;<span class="keyword">in</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">match</span>&nbsp;<span class="constructor">List</span>.map&nbsp;float_of_string&nbsp;sp&nbsp;<span class="keyword">with</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;[&nbsp;x;&nbsp;y;&nbsp;z;&nbsp;d&nbsp;]&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;ans&nbsp;:=&nbsp;<span class="constructor">DVertex</span>&nbsp;(x,&nbsp;y,&nbsp;z,&nbsp;d)&nbsp;::&nbsp;!ans<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;_&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;raise&nbsp;(<span class="constructor">Invalid_argument</span>&nbsp;<span class="string">"not&nbsp;a&nbsp;depth&nbsp;vertex"</span>)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">done</span>;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;!ans<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">with</span>&nbsp;<span class="constructor">End_of_file</span>&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">Invalid_argument</span>&nbsp;_&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;close_in_noerr&nbsp;channel;&nbsp;!ans</code></body></html>

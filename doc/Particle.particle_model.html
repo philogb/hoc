@@ -1,0 +1,42 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<link rel="stylesheet" href="style.css" type="text/css">
+<meta content="text/html; charset=iso-8859-1" http-equiv="Content-Type">
+<link rel="Start" href="index.html">
+<link rel="Up" href="Particle.html">
+<link title="Index of types" rel=Appendix href="index_types.html">
+<link title="Index of values" rel=Appendix href="index_values.html">
+<link title="Index of class attributes" rel=Appendix href="index_attributes.html">
+<link title="Index of class methods" rel=Appendix href="index_methods.html">
+<link title="Index of classes" rel=Appendix href="index_classes.html">
+<link title="Index of modules" rel=Appendix href="index_modules.html">
+<link title="Interpolate" rel="Chapter" href="Interpolate.html">
+<link title="Transition" rel="Chapter" href="Transition.html">
+<link title="Camera" rel="Chapter" href="Camera.html">
+<link title="Loader" rel="Chapter" href="Loader.html">
+<link title="ParticleTrans" rel="Chapter" href="ParticleTrans.html">
+<link title="Particle" rel="Chapter" href="Particle.html">
+<link title="Main" rel="Chapter" href="Main.html"><title>Particle.particle_model</title>
+</head>
+<body>
+<div class="navbar">&nbsp;<a href="Particle.html">Up</a>
+&nbsp;</div>
+<center><h1>Class <a href="type_Particle.particle_model.html">Particle.particle_model</a></h1></center>
+<br>
+<pre><span class="keyword">class</span> <a name="TYPEparticle_model"></a>particle_model : <code class="type"></code><code class="code">object</code> <a href="Particle.particle_model.html">..</a> <code class="code">end</code></pre>The particule model handles the logic for particle animation/interpolation 
+    see Camera<br>
+<hr width="100%">
+<pre><span class="keyword">val</span> <a name="ATTstart_frame"></a><span class="keyword">mutable</span> <a href="code_ATTParticle.particle_model.start_frame.html">start_frame</a> : <code class="type">VertexType.depth_vertex list</code></pre><pre><span class="keyword">val</span> <a name="ATTlast_frame"></a><span class="keyword">mutable</span> <a href="code_ATTParticle.particle_model.last_frame.html">last_frame</a> : <code class="type">VertexType.depth_vertex list</code></pre><pre><span class="keyword">val</span> <a name="ATTloaded_frame"></a><span class="keyword">mutable</span> <a href="code_ATTParticle.particle_model.loaded_frame.html">loaded_frame</a> : <code class="type">VertexType.depth_vertex list</code></pre><pre><span class="keyword">val</span> <a name="ATTtransition"></a><span class="keyword">mutable</span> <a href="code_ATTParticle.particle_model.transition.html">transition</a> : <code class="type"><a href="Transition.html#TYPEtrans">Transition.trans</a> * <a href="Transition.html#TYPEease">Transition.ease</a></code></pre><pre><span class="keyword">val</span> <a name="ATTtime"></a><span class="keyword">mutable</span> <a href="code_ATTParticle.particle_model.time.html">time</a> : <code class="type">float</code></pre><pre><span class="keyword">val</span> <a name="ATTtotal_frames"></a><span class="keyword">mutable</span> <a href="code_ATTParticle.particle_model.total_frames.html">total_frames</a> : <code class="type">float</code></pre><pre><span class="keyword">val</span> <a name="ATTrefresh_frames"></a><span class="keyword">mutable</span> <a href="code_ATTParticle.particle_model.refresh_frames.html">refresh_frames</a> : <code class="type">bool</code></pre><pre><span class="keyword">method</span> <a name="METHODset_animation"></a><a href="code_METHODParticle.particle_model.set_animation.html">set_animation</a> : <code class="type">float -><br>       bool * bool *<br>       (<a href="ParticleTrans.html#TYPEtransformation">ParticleTrans.transformation</a> * float * (<a href="Transition.html#TYPEtrans">Transition.trans</a> * <a href="Transition.html#TYPEease">Transition.ease</a>)) -><br>       unit</code></pre><div class="info">
+Sets the current particle animation/interpolation to be performed<br>
+</div>
+<pre><span class="keyword">method</span> <a name="METHODstep"></a><a href="code_METHODParticle.particle_model.step.html">step</a> : <code class="type">unit</code></pre><div class="info">
+Increases relative animation time<br>
+</div>
+<pre><span class="keyword">method</span> <a name="METHODdraw"></a><a href="code_METHODParticle.particle_model.draw.html">draw</a> : <code class="type">float -> unit</code></pre><div class="info">
+Interpolates the particle, rendering the result<br>
+</div>
+<pre><span class="keyword">method</span> <a name="METHODbalance"></a><a href="code_METHODParticle.particle_model.balance.html">balance</a> : <code class="type">unit</code></pre><div class="info">
+Balances the first or the last frame in order to have the same amount of particles<br>
+</div>
+</body></html>

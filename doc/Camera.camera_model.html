@@ -1,0 +1,62 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<link rel="stylesheet" href="style.css" type="text/css">
+<meta content="text/html; charset=iso-8859-1" http-equiv="Content-Type">
+<link rel="Start" href="index.html">
+<link rel="Up" href="Camera.html">
+<link title="Index of types" rel=Appendix href="index_types.html">
+<link title="Index of values" rel=Appendix href="index_values.html">
+<link title="Index of class attributes" rel=Appendix href="index_attributes.html">
+<link title="Index of class methods" rel=Appendix href="index_methods.html">
+<link title="Index of classes" rel=Appendix href="index_classes.html">
+<link title="Index of modules" rel=Appendix href="index_modules.html">
+<link title="Interpolate" rel="Chapter" href="Interpolate.html">
+<link title="Transition" rel="Chapter" href="Transition.html">
+<link title="Camera" rel="Chapter" href="Camera.html">
+<link title="Loader" rel="Chapter" href="Loader.html">
+<link title="ParticleTrans" rel="Chapter" href="ParticleTrans.html">
+<link title="Particle" rel="Chapter" href="Particle.html">
+<link title="Main" rel="Chapter" href="Main.html"><title>Camera.camera_model</title>
+</head>
+<body>
+<div class="navbar">&nbsp;<a href="Camera.html">Up</a>
+&nbsp;</div>
+<center><h1>Class <a href="type_Camera.camera_model.html">Camera.camera_model</a></h1></center>
+<br>
+<pre><span class="keyword">class</span> <a name="TYPEcamera_model"></a>camera_model : <code class="type"></code><code class="code">object</code> <a href="Camera.camera_model.html">..</a> <code class="code">end</code></pre>The camera_model class applies advanced camera transformations
+    before the data is rendered<br>
+<hr width="100%">
+<pre><span class="keyword">val</span> <a name="ATTtotal_frames"></a><span class="keyword">mutable</span> <a href="code_ATTCamera.camera_model.total_frames.html">total_frames</a> : <code class="type">float</code></pre><div class="info">
+Duration for the camera transition (expressed
+      in number of frames)<br>
+</div>
+<pre><span class="keyword">val</span> <a name="ATTtime"></a><span class="keyword">mutable</span> <a href="code_ATTCamera.camera_model.time.html">time</a> : <code class="type">float</code></pre><div class="info">
+Current relative frame<br>
+</div>
+<pre><span class="keyword">val</span> <a name="ATTtransition"></a><span class="keyword">mutable</span> <a href="code_ATTCamera.camera_model.transition.html">transition</a> : <code class="type"><a href="Transition.html#TYPEtrans">Transition.trans</a> * <a href="Transition.html#TYPEease">Transition.ease</a></code></pre><div class="info">
+How time elapses -linear/quad, etc-<br>
+</div>
+<pre><span class="keyword">val</span> <a name="ATTanimations"></a><span class="keyword">mutable</span> <a href="code_ATTCamera.camera_model.animations.html">animations</a> : <code class="type"><a href="Camera.html#TYPEcamera_op">camera_op</a> list</code></pre><div class="info">
+List of camera operations to be performed -rotations, translations, etc-<br>
+</div>
+<pre><span class="keyword">method</span> <a name="METHODget_time"></a><a href="code_METHODCamera.camera_model.get_time.html">get_time</a> : <code class="type">float</code></pre><div class="info">
+Returns current relative frame for the transition<br>
+</div>
+<pre><span class="keyword">method</span> <a name="METHODset_animations"></a><a href="code_METHODCamera.camera_model.set_animations.html">set_animations</a> : <code class="type"><a href="Camera.html#TYPEcamera_op">camera_op</a> list * float * (<a href="Transition.html#TYPEtrans">Transition.trans</a> * <a href="Transition.html#TYPEease">Transition.ease</a>) -> unit</code></pre><div class="info">
+Sets the camera operations, duration for these
+          operations and special transitions to be performed<br>
+</div>
+<pre><span class="keyword">method</span> <a name="METHODstep"></a><a href="code_METHODCamera.camera_model.step.html">step</a> : <code class="type">unit</code></pre><div class="info">
+Animation step<br>
+</div>
+<pre><span class="keyword">method</span> <a name="METHODtranslate"></a><a href="code_METHODCamera.camera_model.translate.html">translate</a> : <code class="type">Gl.point3 -> Gl.point3 -> float -> unit</code></pre><div class="info">
+Translates the image for some delta<br>
+</div>
+<pre><span class="keyword">method</span> <a name="METHODrotate"></a><a href="code_METHODCamera.camera_model.rotate.html">rotate</a> : <code class="type">float -> float -> Gl.vect3 -> float -> unit</code></pre><div class="info">
+Rotates the image for some delta<br>
+</div>
+<pre><span class="keyword">method</span> <a name="METHODdraw"></a><a href="code_METHODCamera.camera_model.draw.html">draw</a> : <code class="type">unit</code></pre><div class="info">
+Applies the Camera operations<br>
+</div>
+</body></html>

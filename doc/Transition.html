@@ -1,0 +1,153 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<link rel="stylesheet" href="style.css" type="text/css">
+<meta content="text/html; charset=iso-8859-1" http-equiv="Content-Type">
+<link rel="Start" href="index.html">
+<link rel="previous" href="Interpolate.html">
+<link rel="next" href="Camera.html">
+<link rel="Up" href="index.html">
+<link title="Index of types" rel=Appendix href="index_types.html">
+<link title="Index of values" rel=Appendix href="index_values.html">
+<link title="Index of class attributes" rel=Appendix href="index_attributes.html">
+<link title="Index of class methods" rel=Appendix href="index_methods.html">
+<link title="Index of classes" rel=Appendix href="index_classes.html">
+<link title="Index of modules" rel=Appendix href="index_modules.html">
+<link title="Interpolate" rel="Chapter" href="Interpolate.html">
+<link title="Transition" rel="Chapter" href="Transition.html">
+<link title="Camera" rel="Chapter" href="Camera.html">
+<link title="Loader" rel="Chapter" href="Loader.html">
+<link title="ParticleTrans" rel="Chapter" href="ParticleTrans.html">
+<link title="Particle" rel="Chapter" href="Particle.html">
+<link title="Main" rel="Chapter" href="Main.html"><title>Transition</title>
+</head>
+<body>
+<div class="navbar"><a href="Interpolate.html">Previous</a>
+&nbsp;<a href="index.html">Up</a>
+&nbsp;<a href="Camera.html">Next</a>
+</div>
+<center><h1>Module <a href="type_Transition.html">Transition</a></h1></center>
+<br>
+<pre><span class="keyword">module</span> Transition: <code class="code">sig</code> <a href="Transition.html">..</a> <code class="code">end</code></pre>This module provides extra features that describe how camera and particle
+    transformations/interpolations are done.
+        In other words, this module describes how the delta interpolation parameter changes
+        over time<br>
+<hr width="100%">
+<br><code><span class="keyword">type</span> <a name="TYPEtrans"></a><code class="type"></code>trans = </code><table class="typetable">
+<tr>
+<td align="left" valign="top" >
+<code><span class="keyword">|</span></code></td>
+<td align="left" valign="top" >
+<code><span class="constructor">Linear</span></code></td>
+
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code><span class="keyword">|</span></code></td>
+<td align="left" valign="top" >
+<code><span class="constructor">Quad</span></code></td>
+
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code><span class="keyword">|</span></code></td>
+<td align="left" valign="top" >
+<code><span class="constructor">Cubic</span></code></td>
+
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code><span class="keyword">|</span></code></td>
+<td align="left" valign="top" >
+<code><span class="constructor">Quart</span></code></td>
+
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code><span class="keyword">|</span></code></td>
+<td align="left" valign="top" >
+<code><span class="constructor">Quint</span></code></td>
+
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code><span class="keyword">|</span></code></td>
+<td align="left" valign="top" >
+<code><span class="constructor">Circ</span></code></td>
+
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code><span class="keyword">|</span></code></td>
+<td align="left" valign="top" >
+<code><span class="constructor">Sine</span></code></td>
+
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code><span class="keyword">|</span></code></td>
+<td align="left" valign="top" >
+<code><span class="constructor">Back</span></code></td>
+
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code><span class="keyword">|</span></code></td>
+<td align="left" valign="top" >
+<code><span class="constructor">Elastic</span></code></td>
+
+</tr></table>
+
+<div class="info">
+Defines the transition nature/function<br>
+</div>
+
+<br><code><span class="keyword">type</span> <a name="TYPEease"></a><code class="type"></code>ease = </code><table class="typetable">
+<tr>
+<td align="left" valign="top" >
+<code><span class="keyword">|</span></code></td>
+<td align="left" valign="top" >
+<code><span class="constructor">None</span></code></td>
+
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code><span class="keyword">|</span></code></td>
+<td align="left" valign="top" >
+<code><span class="constructor">EaseOut</span></code></td>
+
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code><span class="keyword">|</span></code></td>
+<td align="left" valign="top" >
+<code><span class="constructor">EaseIn</span></code></td>
+
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code><span class="keyword">|</span></code></td>
+<td align="left" valign="top" >
+<code><span class="constructor">EaseInOut</span></code></td>
+
+</tr></table>
+
+<div class="info">
+Easing can be applied to non linear transitions<br>
+</div>
+
+<pre><span class="keyword">val</span> <a name="VALpi"></a><a href="code_VALTransition.pi.html">pi</a> : <code class="type">float</code></pre><pre><span class="keyword">val</span> <a name="VALease_in"></a><a href="code_VALTransition.ease_in.html">ease_in</a> : <code class="type">('a -> 'b) -> 'a -> 'b</code></pre><pre><span class="keyword">val</span> <a name="VALease_out"></a><a href="code_VALTransition.ease_out.html">ease_out</a> : <code class="type">(float -> float) -> float -> float</code></pre><pre><span class="keyword">val</span> <a name="VALease_in_out"></a><a href="code_VALTransition.ease_in_out.html">ease_in_out</a> : <code class="type">(float -> float) -> float -> float</code></pre><pre><span class="keyword">val</span> <a name="VALlinear"></a><a href="code_VALTransition.linear.html">linear</a> : <code class="type">'a -> 'a</code></pre><pre><span class="keyword">val</span> <a name="VALquad"></a><a href="code_VALTransition.quad.html">quad</a> : <code class="type">float -> float</code></pre><pre><span class="keyword">val</span> <a name="VALcubic"></a><a href="code_VALTransition.cubic.html">cubic</a> : <code class="type">float -> float</code></pre><pre><span class="keyword">val</span> <a name="VALquart"></a><a href="code_VALTransition.quart.html">quart</a> : <code class="type">float -> float</code></pre><pre><span class="keyword">val</span> <a name="VALquint"></a><a href="code_VALTransition.quint.html">quint</a> : <code class="type">float -> float</code></pre><pre><span class="keyword">val</span> <a name="VALcirc"></a><a href="code_VALTransition.circ.html">circ</a> : <code class="type">float -> float</code></pre><pre><span class="keyword">val</span> <a name="VALsine"></a><a href="code_VALTransition.sine.html">sine</a> : <code class="type">float -> float</code></pre><pre><span class="keyword">val</span> <a name="VALback"></a><a href="code_VALTransition.back.html">back</a> : <code class="type">float -> float</code></pre><pre><span class="keyword">val</span> <a name="VALelastic"></a><a href="code_VALTransition.elastic.html">elastic</a> : <code class="type">float -> float</code></pre><pre><span class="keyword">val</span> <a name="VALget_transition"></a><a href="code_VALTransition.get_transition.html">get_transition</a> : <code class="type"><a href="Transition.html#TYPEtrans">trans</a> -> float -> float</code></pre><div class="info">
+Transition Dispatcher<br>
+<b>Returns</b> Transition function<br>
+</div>
+<pre><span class="keyword">val</span> <a name="VALget_ease"></a><a href="code_VALTransition.get_ease.html">get_ease</a> : <code class="type"><a href="Transition.html#TYPEease">ease</a> -> (float -> float) -> float -> float</code></pre><div class="info">
+Ease Dispatcher<br>
+<b>Returns</b> Easing function<br>
+</div>
+<pre><span class="keyword">val</span> <a name="VALget_animation"></a><a href="code_VALTransition.get_animation.html">get_animation</a> : <code class="type"><a href="Transition.html#TYPEtrans">trans</a> -> <a href="Transition.html#TYPEease">ease</a> -> float -> float</code></pre><div class="info">
+Animation Dispatcher<br>
+<b>Returns</b> Animation function<br>
+</div>
+<div class="param_info"><code class="code">t</code> : Transition Type Constructor</div>
+<div class="param_info"><code class="code">e</code> : Ease Type Constructor</div>
+</body></html>

@@ -1,0 +1,48 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<link rel="stylesheet" href="style.css" type="text/css">
+<meta content="text/html; charset=iso-8859-1" http-equiv="Content-Type">
+<link rel="Start" href="index.html">
+<link rel="previous" href="Camera.html">
+<link rel="next" href="ParticleTrans.html">
+<link rel="Up" href="index.html">
+<link title="Index of types" rel=Appendix href="index_types.html">
+<link title="Index of values" rel=Appendix href="index_values.html">
+<link title="Index of class attributes" rel=Appendix href="index_attributes.html">
+<link title="Index of class methods" rel=Appendix href="index_methods.html">
+<link title="Index of classes" rel=Appendix href="index_classes.html">
+<link title="Index of modules" rel=Appendix href="index_modules.html">
+<link title="Interpolate" rel="Chapter" href="Interpolate.html">
+<link title="Transition" rel="Chapter" href="Transition.html">
+<link title="Camera" rel="Chapter" href="Camera.html">
+<link title="Loader" rel="Chapter" href="Loader.html">
+<link title="ParticleTrans" rel="Chapter" href="ParticleTrans.html">
+<link title="Particle" rel="Chapter" href="Particle.html">
+<link title="Main" rel="Chapter" href="Main.html"><title>Loader</title>
+</head>
+<body>
+<div class="navbar"><a href="Camera.html">Previous</a>
+&nbsp;<a href="index.html">Up</a>
+&nbsp;<a href="ParticleTrans.html">Next</a>
+</div>
+<center><h1>Module <a href="type_Loader.html">Loader</a></h1></center>
+<br>
+<pre><span class="keyword">module</span> Loader: <code class="code">sig</code> <a href="Loader.html">..</a> <code class="code">end</code></pre>Loads CSV files and saves OpenGL rendered images into bmp or jpeg files<br>
+<hr width="100%">
+<pre><span class="keyword">val</span> <a name="VALsoi"></a><a href="code_VALLoader.soi.html">soi</a> : <code class="type">int -> string</code></pre><pre><span class="keyword">val</span> <a name="VALpath"></a><a href="code_VALLoader.path.html">path</a> : <code class="type">string</code></pre><div class="info">
+Path to CSV files<br>
+</div>
+<pre><span class="keyword">val</span> <a name="VALimg_path"></a><a href="code_VALLoader.img_path.html">img_path</a> : <code class="type">string</code></pre><div class="info">
+Path to image files<br>
+</div>
+<pre><span class="keyword">val</span> <a name="VALload_file"></a><a href="code_VALLoader.load_file.html">load_file</a> : <code class="type">string -> VertexType.depth_vertex list</code></pre><div class="info">
+Loads a CSV file and returns a 4D vertex array<br>
+</div>
+<pre><span class="keyword">val</span> <a name="VALget_frame"></a><a href="code_VALLoader.get_frame.html">get_frame</a> : <code class="type">int -> VertexType.depth_vertex list</code></pre><div class="info">
+Returns a specific frame<br>
+</div>
+<pre><span class="keyword">val</span> <a name="VALsave_frame"></a><a href="code_VALLoader.save_frame.html">save_frame</a> : <code class="type">int -> unit</code></pre><div class="info">
+Saves the rendered OpenGL image into bmp or jpeg files<br>
+</div>
+</body></html>
